@@ -12,6 +12,7 @@ import {
   WebViewNavigationEvent,
   WebViewOpenWindowEvent,
   WebViewProgressEvent,
+  WebViewCookiesEvent,
   WebViewRenderProcessGoneEvent,
   WebViewTerminatedEvent,
 } from './WebViewTypes';
@@ -103,6 +104,7 @@ export const useWebViewLogic = ({
   onLoadStart,
   onLoad,
   onLoadProgress,
+  onSetCookies,
   onLoadEnd,
   onError,
   onHttpErrorProp,
@@ -119,6 +121,7 @@ export const useWebViewLogic = ({
   onLoadStart?: (event: WebViewNavigationEvent) => void;
   onLoad?: (event: WebViewNavigationEvent) => void;
   onLoadProgress?: (event: WebViewProgressEvent) => void;
+  onSetCookies?: (event: WebViewCookiesEvent) => void;
   onLoadEnd?: (event: WebViewNavigationEvent | WebViewErrorEvent) => void;
   onError?: (event: WebViewErrorEvent) => void;
   onHttpErrorProp?: (event: WebViewHttpErrorEvent) => void;
@@ -204,6 +207,10 @@ export const useWebViewLogic = ({
     onLoadProgress?.(event);
   }, [onLoadProgress]);
 
+  const onSettingCookies = useCallback((event: WebViewCookiesEvent) => {
+    onSetCookies?.(event);
+  }, [onSetCookies]);
+
   const onShouldStartLoadWithRequest = useMemo(() =>  createOnShouldStartLoadWithRequest(
       onShouldStartLoadWithRequestCallback,
       originWhitelist,
@@ -221,6 +228,7 @@ export const useWebViewLogic = ({
     onShouldStartLoadWithRequest,
     onLoadingStart,
     onLoadingProgress,
+    onSettingCookies,
     onLoadingError,
     onLoadingFinish,
     onHttpError,

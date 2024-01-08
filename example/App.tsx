@@ -24,6 +24,7 @@ import CustomMenu from './examples/CustomMenu';
 import OpenWindow from './examples/OpenWindow';
 import SuppressMenuItems from './examples/Suppress';
 import ClearData from './examples/ClearData';
+import Cookies from './examples/Cookies';
 
 const TESTS = {
   Messaging: {
@@ -65,6 +66,14 @@ const TESTS = {
     render() {
       return <ClearData />;
     },
+  },
+  Cookies: {
+    title: 'Cookies',
+    testId: 'cookies',
+    description: 'HTTP cookies test',
+    render() {
+      return <Cookies />;
+    }
   },
   Downloads: {
     title: 'Downloads',
@@ -249,6 +258,11 @@ export default class App extends Component<Props, State> {
             testID="testType_clearData"
             title="ClearData"
             onPress={() => this._changeTest('ClearData')}
+          />
+          <Button
+            testID="testType_cookies"
+            title="Cookies"
+            onPress={() => this._changeTest('Cookies')}
           />
         </View>
 

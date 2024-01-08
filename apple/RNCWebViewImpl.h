@@ -50,6 +50,7 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingFinish;
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingError;
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingProgress;
+@property (nonatomic, copy) RCTDirectEventBlock onSettingCookies;
 @property (nonatomic, copy) RCTDirectEventBlock onShouldStartLoadWithRequest;
 @property (nonatomic, copy) RCTDirectEventBlock onHttpError;
 @property (nonatomic, copy) RCTDirectEventBlock onMessage;

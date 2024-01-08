@@ -162,6 +162,20 @@ auto stringToOnLoadingFinishNavigationTypeEnum(std::string value) {
                 webViewEventEmitter->onLoadingProgress(data);
             }
         };
+        _view.onSettingCookies = [self](NSDictionary* dictionary) {
+            if (_eventEmitter) {
+                auto webViewEventEmitter = std::static_pointer_cast<RNCWebViewEventEmitter const>(_eventEmitter);
+                facebook::react::RNCWebViewEventEmitter::OnSettingCookies data = {
+                    .url = std::string([[dictionary valueForKey:@"url"] UTF8String]),
+                    .loading = [[dictionary valueForKey:@"loading"] boolValue],
+                    .title = std::string([[dictionary valueForKey:@"title"] UTF8String]),
+                    .canGoBack = [[dictionary valueForKey:@"canGoBack"] boolValue],
+                    .canGoForward = [[dictionary valueForKey:@"canGoBack"] boolValue],
+                    .lockIdentifier = [[dictionary valueForKey:@"lockIdentifier"] doubleValue]
+                    //.cookies = [[dictionary valueForKey:@"cookies"] arrayValues]
+                }
+            }
+        };
         _view.onContentProcessDidTerminate = [self](NSDictionary* dictionary) {
             if (_eventEmitter) {
                 auto webViewEventEmitter = std::static_pointer_cast<RNCWebViewEventEmitter const>(_eventEmitter);

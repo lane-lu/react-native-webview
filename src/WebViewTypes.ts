@@ -92,6 +92,17 @@ export interface WebViewNativeProgressEvent extends WebViewNativeEvent {
   progress: number;
 }
 
+export interface WebViewNativeCookiesEvent extends WebViewNativeEvent {
+  url: string;
+  cookies: {
+    name: string;
+    value: string;
+    path: string;
+    domain: string;
+    version: number;
+  }[];
+}
+
 export interface WebViewNavigation extends WebViewNativeEvent {
   navigationType:
     | 'click'
@@ -143,6 +154,9 @@ export type WebViewEvent = NativeSyntheticEvent<WebViewNativeEvent>;
 
 export type WebViewProgressEvent =
   NativeSyntheticEvent<WebViewNativeProgressEvent>;
+
+export type WebViewCookiesEvent = 
+  NativeSyntheticEvent<WebViewNativeCookiesEvent>;
 
 export type WebViewNavigationEvent = NativeSyntheticEvent<WebViewNavigation>;
 
@@ -307,6 +321,7 @@ export interface CommonNativeWebViewProps extends ViewProps {
   onLoadingError: (event: WebViewErrorEvent) => void;
   onLoadingFinish: (event: WebViewNavigationEvent) => void;
   onLoadingProgress: (event: WebViewProgressEvent) => void;
+  onSettingCookies: (event: WebViewCookiesEvent) => void;
   onLoadingStart: (event: WebViewNavigationEvent) => void;
   onHttpError: (event: WebViewHttpErrorEvent) => void;
   onMessage: (event: WebViewMessageEvent) => void;
@@ -1189,6 +1204,11 @@ export interface WebViewSharedProps extends ViewProps {
    * Function that is invoked when the `WebView` is loading.
    */
   onLoadProgress?: (event: WebViewProgressEvent) => void;
+
+  /**
+   * Function that is invoked when set cookies.
+   */
+  onSetCookies?: (event: WebViewCookiesEvent) => void;
 
   /**
    * Boolean value that forces the `WebView` to show the loading view

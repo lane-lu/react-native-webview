@@ -50,6 +50,7 @@ const WebViewComponent = forwardRef<{}, MacOSWebViewProps>(({
   onLoad,
   onLoadEnd,
   onLoadProgress,
+  onSetCookies,
   onHttpError: onHttpErrorProp,
   onMessage: onMessageProp,
   renderLoading,
@@ -75,13 +76,14 @@ const WebViewComponent = forwardRef<{}, MacOSWebViewProps>(({
     RNCWebViewModule.shouldStartLoadWithLockIdentifier(!!shouldStart, lockIdentifier);
   }, []);
 
-  const { onLoadingStart, onShouldStartLoadWithRequest, onMessage, viewState, setViewState, lastErrorEvent, onHttpError, onLoadingError, onLoadingFinish, onLoadingProgress, onContentProcessDidTerminate } = useWebViewLogic({
+  const { onLoadingStart, onShouldStartLoadWithRequest, onMessage, viewState, setViewState, lastErrorEvent, onHttpError, onLoadingError, onLoadingFinish, onLoadingProgress, onSettingCookies, onContentProcessDidTerminate } = useWebViewLogic({
     onNavigationStateChange,
     onLoad,
     onError,
     onHttpErrorProp,
     onLoadEnd,
     onLoadProgress,
+    onSetCookies,
     onLoadStart,
     onMessageProp,
     startInLoadingState,
@@ -142,6 +144,7 @@ const WebViewComponent = forwardRef<{}, MacOSWebViewProps>(({
       onLoadingError={onLoadingError}
       onLoadingFinish={onLoadingFinish}
       onLoadingProgress={onLoadingProgress}
+      onSettingCookies={onSettingCookies}
       onLoadingStart={onLoadingStart}
       onHttpError={onHttpError}
       onMessage={onMessage}

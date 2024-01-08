@@ -43,6 +43,7 @@ const WebViewComponent = forwardRef<{}, WindowsWebViewProps>(({
   onLoad,
   onLoadEnd,
   onLoadProgress,
+  onSetCookies,
   onHttpError: onHttpErrorProp,
   onMessage: onMessageProp,
   renderLoading,
@@ -71,13 +72,14 @@ const WebViewComponent = forwardRef<{}, WindowsWebViewProps>(({
     }
   }, [RCTWebViewString]);
 
-  const { onLoadingStart, onShouldStartLoadWithRequest, onMessage, viewState, setViewState, lastErrorEvent, onHttpError, onLoadingError, onLoadingFinish, onLoadingProgress } = useWebViewLogic({
+  const { onLoadingStart, onShouldStartLoadWithRequest, onMessage, viewState, setViewState, lastErrorEvent, onHttpError, onLoadingError, onLoadingFinish, onLoadingProgress, onSettingCookies } = useWebViewLogic({
     onNavigationStateChange,
     onLoad,
     onError,
     onHttpErrorProp,
     onLoadEnd,
     onLoadProgress,
+    onSetCookies,
     onLoadStart,
     onMessageProp,
     startInLoadingState,
@@ -127,6 +129,7 @@ const WebViewComponent = forwardRef<{}, WindowsWebViewProps>(({
     onLoadingError={onLoadingError}
     onLoadingFinish={onLoadingFinish}
     onLoadingProgress={onLoadingProgress}
+    onSettingCookies={onSettingCookies}
     onLoadingStart={onLoadingStart}
     onHttpError={onHttpError}
     onMessage={onMessage}

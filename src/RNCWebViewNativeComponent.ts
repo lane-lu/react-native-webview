@@ -61,6 +61,22 @@ export type WebViewNativeProgressEvent = Readonly< {
   progress: Double;
 }>
 
+export type WebViewNativeCookiesEvent = Readonly<{
+  url: string;
+  loading: boolean;
+  title: string;
+  canGoBack: boolean;
+  canGoForward: boolean;
+  lockIdentifier: Double;
+  cookies: {
+    name: string;
+    value: string;
+    path: string;
+    domain: string;
+    version: number;
+  }[];
+}>
+
 export type WebViewNavigationEvent = Readonly< {
   url: string;
   loading: boolean;
@@ -235,6 +251,7 @@ export interface NativeProps extends ViewProps {
   onLoadingError: DirectEventHandler<WebViewErrorEvent>;
   onLoadingFinish: DirectEventHandler<WebViewNavigationEvent>;
   onLoadingProgress: DirectEventHandler<WebViewNativeProgressEvent>;
+  onSettingCookies: DirectEventHandler<WebViewNativeCookiesEvent>;
   onLoadingStart: DirectEventHandler<WebViewNavigationEvent>;
   onHttpError: DirectEventHandler<WebViewHttpErrorEvent>;
   onMessage: DirectEventHandler<WebViewMessageEvent>;

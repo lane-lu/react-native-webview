@@ -1058,45 +1058,13 @@ RCTAutoInsetsProtocol>
   didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
                   completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable))completionHandler
 {
-  NSString* host = nil;
-  if (webView.URL != nil) {
-    host = webView.URL.host;
+  if (challenge.protectionSpace.serverTrust == nil) {
+    completionHandler(NSURLSessionAuthChallengeUseCredential, nil);
+  } else {
+    SecTrustRef trust = [[challenge protectionSpace] serverTrust];
+    NSURLCredential *useCredential = [NSURLCredential credentialForTrust:trust];
+    completionHandler(NSURLSessionAuthChallengeUseCredential, useCredential);
   }
-  if ([[challenge protectionSpace] authenticationMethod] == NSURLAuthenticationMethodClientCertificate) {
-    completionHandler(NSURLSessionAuthChallengeUseCredential, clientAuthenticationCredential);
-    return;
-  }
-  if ([[challenge protectionSpace] serverTrust] != nil && customCertificatesForHost != nil && host != nil) {
-    SecCertificateRef localCertificate = (__bridge SecCertificateRef)([customCertificatesForHost objectForKey:host]);
-    if (localCertificate != nil) {
-      NSData *localCertificateData = (NSData*) CFBridgingRelease(SecCertificateCopyData(localCertificate));
-      SecTrustRef trust = [[challenge protectionSpace] serverTrust];
-      long count = SecTrustGetCertificateCount(trust);
-      for (long i = 0; i < count; i++) {
-        SecCertificateRef serverCertificate = SecTrustGetCertificateAtIndex(trust, i);
-        if (serverCertificate == nil) { continue; }
-        NSData *serverCertificateData = (NSData *) CFBridgingRelease(SecCertificateCopyData(serverCertificate));
-        if ([serverCertificateData isEqualToData:localCertificateData]) {
-          NSURLCredential *useCredential = [NSURLCredential credentialForTrust:trust];
-          if (challenge.sender != nil) {
-            [challenge.sender useCredential:useCredential forAuthenticationChallenge:challenge];
-          }
-          completionHandler(NSURLSessionAuthChallengeUseCredential, useCredential);
-          return;
-        }
-      }
-    }
-  }
-  if ([[challenge protectionSpace] authenticationMethod] == NSURLAuthenticationMethodHTTPBasic) {
-    NSString *username = [_basicAuthCredential valueForKey:@"username"];
-    NSString *password = [_basicAuthCredential valueForKey:@"password"];
-    if (username && password) {
-      NSURLCredential *credential = [NSURLCredential credentialWithUser:username password:password persistence:NSURLCredentialPersistenceNone];
-      completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
-      return;
-    }
-  }
-  completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
 }
 
 #pragma mark - WKNavigationDelegate methods
@@ -1481,6 +1449,28 @@ didFinishNavigation:(WKNavigation *)navigation
 
   if (_onLoadingFinish) {
     _onLoadingFinish([self baseEvent]);
+  }
+  
+  if (_onSettingCookies) {
+    NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+    
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    NSArray<NSHTTPCookie *> *cookies = [storage cookies];
+    
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:[cookies count]];
+    for (NSHTTPCookie *cookie in cookies) {
+      NSLog(@"cookie name: %@, value: %@, path: %@", cookie.name, cookie.value, cookie.path);
+      NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithCapacity:5];
+      [dic setValue:[NSString stringWithString:cookie.name] forKey:@"name"];
+      [dic setValue:[NSString stringWithString:cookie.value] forKey:@"value"];
+      [dic setValue:[NSString stringWithString:cookie.path] forKey:@"path"];
+      [dic setValue:[NSString stringWithString:cookie.domain] forKey:@"domain"];
+      [dic setValue:[NSNumber numberWithInt:cookie.version] forKey:@"version"];
+      [array addObject:dic];
+    }
+    [event addEntriesFromDictionary:@{@"cookies":array}];
+    
+    _onSettingCookies(event);
   }
 }
 

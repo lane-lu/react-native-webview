@@ -54,6 +54,7 @@ const WebViewComponent = forwardRef<{}, AndroidWebViewProps>(({
   onLoad,
   onLoadEnd,
   onLoadProgress,
+  onSetCookies,
   onHttpError: onHttpErrorProp,
   onRenderProcessGone: onRenderProcessGoneProp,
   onMessage: onMessageProp,
@@ -81,13 +82,14 @@ const WebViewComponent = forwardRef<{}, AndroidWebViewProps>(({
     }
   }, []);
 
-  const { onLoadingStart, onShouldStartLoadWithRequest, onMessage, viewState, setViewState, lastErrorEvent, onHttpError, onLoadingError, onLoadingFinish, onLoadingProgress, onOpenWindow, onRenderProcessGone } = useWebViewLogic({
+  const { onLoadingStart, onShouldStartLoadWithRequest, onMessage, viewState, setViewState, lastErrorEvent, onHttpError, onLoadingError, onLoadingFinish, onLoadingProgress, onSettingCookies, onOpenWindow, onRenderProcessGone } = useWebViewLogic({
     onNavigationStateChange,
     onLoad,
     onError,
     onHttpErrorProp,
     onLoadEnd,
     onLoadProgress,
+    onSetCookies,
     onLoadStart,
     onRenderProcessGoneProp,
     onMessageProp,
@@ -183,6 +185,7 @@ const WebViewComponent = forwardRef<{}, AndroidWebViewProps>(({
     onLoadingError={onLoadingError}
     onLoadingFinish={onLoadingFinish}
     onLoadingProgress={onLoadingProgress}
+    onSettingCookies={onSettingCookies}
     onLoadingStart={onLoadingStart}
     onHttpError={onHttpError}
     onRenderProcessGone={onRenderProcessGone}

@@ -65,6 +65,7 @@ const WebViewComponent = forwardRef<{}, IOSWebViewProps>(({
   onLoad,
   onLoadEnd,
   onLoadProgress,
+  onSetCookies,
   onContentProcessDidTerminate: onContentProcessDidTerminateProp,
   onFileDownload,
   onHttpError: onHttpErrorProp,
@@ -95,13 +96,14 @@ const WebViewComponent = forwardRef<{}, IOSWebViewProps>(({
     RNCWebViewModule.shouldStartLoadWithLockIdentifier(shouldStart, lockIdentifier);
   }, []);
 
-  const { onLoadingStart, onShouldStartLoadWithRequest, onMessage, viewState, setViewState, lastErrorEvent, onHttpError, onLoadingError, onLoadingFinish, onLoadingProgress, onOpenWindow, onContentProcessDidTerminate } = useWebViewLogic({
+  const { onLoadingStart, onShouldStartLoadWithRequest, onMessage, viewState, setViewState, lastErrorEvent, onHttpError, onLoadingError, onLoadingFinish, onLoadingProgress, onSettingCookies, onOpenWindow, onContentProcessDidTerminate } = useWebViewLogic({
     onNavigationStateChange,
     onLoad,
     onError,
     onHttpErrorProp,
     onLoadEnd,
     onLoadProgress,
+    onSetCookies,
     onLoadStart,
     onMessageProp,
     onOpenWindowProp,
@@ -189,6 +191,7 @@ const WebViewComponent = forwardRef<{}, IOSWebViewProps>(({
       onLoadingError={onLoadingError}
       onLoadingFinish={onLoadingFinish}
       onLoadingProgress={onLoadingProgress}
+      onSettingCookies={onSettingCookies}
       onFileDownload={onFileDownload}
       onLoadingStart={onLoadingStart}
       onHttpError={onHttpError}
