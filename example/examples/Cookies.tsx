@@ -18,7 +18,7 @@ export default class Cookies extends Component<Props, State> {
       <View>
         <View style={{ height: 120 }}>
           <WebView
-            source={{uri: 'https://cn.bing.com'}}
+            source={{uri: 'https://ezmaxmobile-server-mas-i810-manage.apps.awsmas810.ezmaxcloud.com/'}}
             customCertificatesForHost={''}
             automaticallyAdjustContentInsets={false}
             onNavigationStateChange={this.handleWebViewNavigationStateChange}
